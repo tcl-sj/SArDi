@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 沉浸状态栏ID -->
+    <item type="id" name="immersion_status_bar_view" />  //背景
+    <item type="id" name="immersion_status_bar_shade_view" />  //前景
+
+    <item type="id" name="base_root_view"/>
+    <item type="id" name="base_content_view"/>
+    <item type="id" name="base_title_view_stub"/>
+    <item type="id" name="base_title_view"/>
+</resources>
