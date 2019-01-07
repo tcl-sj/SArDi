@@ -1,8 +1,12 @@
 package com.siasun.tech.servicerobot.edu.ui.presenter;
 
+import android.util.Log;
+
+import com.siasun.tech.servicerobot.edu.http.bean.AnswerBean;
 import com.siasun.tech.servicerobot.edu.http.bean.RespData;
 import com.siasun.tech.servicerobot.edu.http.bean.TokenBean;
 import com.siasun.tech.servicerobot.edu.http.api.IApiService;
+import com.siasun.tech.servicerobot.edu.http.bean.UserInfoBean;
 import com.siasun.tech.servicerobot.edu.http.http.tools.JsonUtil;
 import com.siasun.tech.servicerobot.edu.tools.SLog;
 
@@ -12,6 +16,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -24,8 +29,8 @@ import io.reactivex.schedulers.Schedulers;
 public class MainPresenter implements MainContract.Presenter {
 
     private MainContract.View mView;
-    IApiService mIApiService;
-    TokenBean mTokenBean;
+    private IApiService mIApiService;
+    private TokenBean mTokenBean;
 
     private CompositeDisposable mDisposables;
 
@@ -37,7 +42,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void doLogin() {
+    public void doLogin(String macAddress) {
         Map<String, String> map = new HashMap<>();
         map.put("mac", "123456");
         mIApiService.login(JsonUtil.packageRequestParams(map))
@@ -57,8 +62,51 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        SLog.e("onError: ", e.getCause().toString());
+                        SLog.e("onError: ", Log.getStackTraceString(e));
                         mView.dismissLoadingDialog();
+                    }
+                });
+    }
+
+    @Override
+    public void getAnswer(String question) {
+        mIApiService.getAnswer(question).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<RespData<AnswerBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposables.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(RespData<AnswerBean> answerBeanRespData) {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
+    public void getUserInfo(String robotId) {
+        mIApiService.getUserInfo(robotId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<RespData<UserInfoBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(RespData<UserInfoBean> userInfoBeanRespData) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
                     }
                 });
     }

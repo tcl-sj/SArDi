@@ -13,9 +13,21 @@ public interface MainContract {
         void onLoginSuccess();
 
         void onLoginFail();
+
+        void onGetUserInfoSuccess();
+
+        void onGetUserInfoFail();
+
+        void onGetAnswerSuccess();
+
+        void onGetAnswerFail();
     }
 
     interface Presenter extends BasePresenter<View> {
-        void doLogin();
+        void doLogin(String macAddress);
+
+        void getUserInfo(String robotId);
+
+        void getAnswer(String question);
     }
 }

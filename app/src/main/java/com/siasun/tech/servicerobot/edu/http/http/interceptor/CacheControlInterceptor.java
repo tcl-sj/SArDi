@@ -3,9 +3,10 @@ package com.siasun.tech.servicerobot.edu.http.http.interceptor;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.siasun.tech.servicerobot.edu.http.http.tools.NetworkUtil;
+
 import java.io.IOException;
 
-import edu.servicerobot.tech.siasun.com.projectedu.http.base.tools.NetworkUtil;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;

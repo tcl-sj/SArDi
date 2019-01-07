@@ -46,11 +46,11 @@ public interface BaseView {
      */
     boolean isLoadingShowing();
 
-    /**
-     * 订阅当前view
-     *
-     * @param tag 用于区分调用
-     * @param d   用于{@link android.app.Activity#onDestroy()}解除订阅
-     */
-    void onSubscribeView(Disposable d, String tag);
+//    /**
+//     * 订阅当前view
+//     *
+//     * @param tag 用于区分调用
+//     * @param d   用于{@link android.app.Activity#onDestroy()}解除订阅
+//     */
+//    void onSubscribeView(Disposable d, String tag);
 }

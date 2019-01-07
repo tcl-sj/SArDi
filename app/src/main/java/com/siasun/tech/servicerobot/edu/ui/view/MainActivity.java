@@ -11,19 +11,12 @@ import com.siasun.tech.servicerobot.edu.ui.presenter.MainPresenter;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
-
 
 public class MainActivity extends MBaseToolbarActivity implements MainContract.View {
     private static final String TAG = "MainActivity";
 
     @Inject
     MainPresenter mPresenter;
-
-    @Override
-    public void onSubscribeView(Disposable d, String tag) {
-
-    }
 
     @Override
     public int getTitleMenuRes() {
@@ -48,7 +41,27 @@ public class MainActivity extends MBaseToolbarActivity implements MainContract.V
     @Override
     public void onInit() {
         mPresenter.takeView(this);
-        mPresenter.doLogin();
+        mPresenter.doLogin("");
+    }
+
+    @Override
+    public void onGetUserInfoSuccess() {
+
+    }
+
+    @Override
+    public void onGetUserInfoFail() {
+
+    }
+
+    @Override
+    public void onGetAnswerSuccess() {
+
+    }
+
+    @Override
+    public void onGetAnswerFail() {
+
     }
 
     @Override

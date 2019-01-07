@@ -32,7 +32,7 @@ public abstract class NetworkModule {
 
     @Provides
     @Singleton
-    static IApiService provideApiService(OkHttpClient okHttpClient, final TokenBean tokenBean) {
+    static IApiService provideApiService(OkHttpClient.Builder okHttpClientBuilder, final TokenBean tokenBean) {
         String baseUrl = IApiService.class.getAnnotation(BaseUrl.class).baseUrl();
         if (baseUrl == null) {
             throw new RuntimeException("Base url is null, please use annotation "
@@ -55,9 +55,10 @@ public abstract class NetworkModule {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(okHttpClient.newBuilder()
-                        .addInterceptor(loggingInterceptor)
-                        .addInterceptor(mTokenInterceptor).build())
+                .client(okHttpClientBuilder.addInterceptor(loggingInterceptor)
+                        .addNetworkInterceptor(loggingInterceptor)
+                        .addNetworkInterceptor(mTokenInterceptor)
+                        .build())
 //                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(JsonUtil.gson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -67,7 +68,7 @@ public abstract class NetworkModule {
 
     @Provides
     @Singleton
-    static OkHttpClient provideHttpClient() {
+    static OkHttpClient.Builder provideHttpClientBuilder() {
         //定制OkHttp
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         //设置超时时间
@@ -75,6 +76,6 @@ public abstract class NetworkModule {
         httpClientBuilder.writeTimeout(15, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(15, TimeUnit.SECONDS);
         httpClientBuilder.retryOnConnectionFailure(true);
-        return httpClientBuilder.build();
+        return httpClientBuilder;
     }
 }
